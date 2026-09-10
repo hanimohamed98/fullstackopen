@@ -20,17 +20,21 @@ const PersonForm = (props) => {
 
 const Person = (props) => {
   return (
-    <p>{props.person.name} {props.person.number}</p>
-  )
+    <p>
+      {props.person.name} {props.person.number}
+     <button onClick={props.removePerson}>delete</button>
+    </p>
+
+    )
+
 }
 
 const Persons = (props) => {
   return (
     <div>
       {props.persons.map(person =>
-        <Person key = {person.name} person={person} />
-      )} 
-    
+        <Person key = {person.id} person={person} removePerson = {() => props.removePerson(person.id, person.name)} />
+      )}
     </div>
   )
 }
@@ -39,6 +43,7 @@ const App = () => {
   const [persons, setPersons] = useState([]) 
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
+
 
     useEffect (() => {
     personService
@@ -82,7 +87,15 @@ const handleNumberChange = (event) => {
   setNewNumber(event.target.value)
 }
 
-
+const removePerson = (id, name) => {
+  if (window.confirm(`Delete ${name}?`)) {
+    personService
+    .remove(id)
+    .then (() => {
+      setPersons(persons.filter(person => person.id !==id))
+    })
+  }
+}
 
 
 return (
@@ -102,7 +115,7 @@ return (
 
       <h3>Numbers</h3>
 
-      <Persons persons={persons} />
+      <Persons persons={persons} removePerson={removePerson}/>
     </div>
   )
 }
