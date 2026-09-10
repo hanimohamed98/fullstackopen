@@ -1,5 +1,6 @@
 import {useState, useEffect} from 'react'
 import personService from './services/persons'
+import Notification from './Notification'
 
 const PersonForm = (props) => {
   return (
@@ -43,6 +44,7 @@ const App = () => {
   const [persons, setPersons] = useState([]) 
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
+  const [notificationMessage, setNotificationMessage] = useState(null)
 
 
     useEffect (() => {
@@ -74,6 +76,10 @@ const addName = (event) => {
     setPersons(persons.concat(response.data))
     setNewName('')
     setNewNumber('')
+    setNotificationMessage(`Added ${response.data.name}`)
+    setTimeout(() => {
+      setNotificationMessage(null)
+    }, 5000)
   })
 
 }
@@ -93,6 +99,10 @@ const removePerson = (id, name) => {
     .remove(id)
     .then (() => {
       setPersons(persons.filter(person => person.id !==id))
+      setNotificationMessage(`Deleted ${name}`)
+      setTimeout(() => {
+        setNotificationMessage(null)
+      }, 5000)
     })
   }
 }
@@ -100,6 +110,9 @@ const removePerson = (id, name) => {
 
 return (
     <div>
+
+      <Notification message={notificationMessage} />
+
       <h2>Phonebook</h2>
 
 
