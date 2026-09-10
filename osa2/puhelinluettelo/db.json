@@ -24,6 +24,11 @@
       "name": "Hani",
       "number": "0487399202",
       "id": "u77QAw5khZQ"
+    },
+    {
+      "name": "Nasteeha",
+      "number": "08808008",
+      "id": "q5W1Ir09Gf8"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"
