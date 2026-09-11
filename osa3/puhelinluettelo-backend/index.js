@@ -63,6 +63,21 @@ app.delete('/api/persons/:id', (request,response) => {
 app.post('/api/persons', (request, response) => {
     const body = request.body
 
+    if (!body.name || !body.number) {
+        return response.status(400).json({
+            error: 'name or number missing'
+        })
+    }
+
+
+    if (persons.some(person => person.name === body.name)) {
+        return response.status(400).json({
+
+            error: 'name must be unique'
+            
+        })
+    }
+
     const person = {
         name: body.name,
         number: body.number,
@@ -72,15 +87,6 @@ app.post('/api/persons', (request, response) => {
     persons = persons.concat(person)
     response.json(person)
 })
-
-
-
-
-
-
-
-
-
 
 
 app.get('/info', (request, response) => {
