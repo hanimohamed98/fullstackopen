@@ -64,12 +64,9 @@ app.get ('/api/persons/:id', (request, response) => {
 
 })
 
-const generateId = () => {
-    return String(Math.floor(Math.random() * 1000))
-}
 
 app.delete('/api/persons/:id', (request,response, next) => {
-    Person.findByIdAndDelete(request.params.id).then(result => {
+    Person.findByIdAndDelete(request.params.id).then(() => {
          response.status(204).end()   
         })
         .catch(error => next(error))
