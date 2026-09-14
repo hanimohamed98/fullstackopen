@@ -3,7 +3,7 @@ const assert = require('node:assert')
 const mongoose = require('mongoose')
 const supertest = require('supertest')
 const app = require('../app')
-const Blog = require ('../models/blog')
+const Blog = require('../models/blog')
 
 const api = supertest(app)
 
@@ -35,6 +35,13 @@ test('all blogs are returned', async () => {
     assert.strictEqual(response.body.length, initialBlogs.length)
 })
 
+test('blog identifier is named id', async () => {
+    const response = await api.get ('/api/blogs')
+    const blog = response.body[0]
+
+    assert(blog.id)
+    assert.strictEqual(blog._id, undefined)
+})
 
 
 after(async () => {
