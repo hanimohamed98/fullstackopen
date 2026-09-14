@@ -4,6 +4,7 @@ const mongoose = require('mongoose')
 const supertest = require('supertest')
 const app = require('../app')
 const Blog = require('../models/blog')
+const User = require('../models/user')
 
 const api = supertest(app)
 
@@ -19,7 +20,17 @@ const initialBlogs = [
 
   beforeEach (async () => {
     await Blog.deleteMany ({})
+    await User.deleteMany({})
+
+    const user = new User ({
+        username: 'root',
+        name: 'Root User',
+        passwordHash: 'salainen',
+        blogs: []
+    })
+    await user.save()
     await Blog.insertMany(initialBlogs)
+
   })
 
 test('blogs are returned as json', async () => {
