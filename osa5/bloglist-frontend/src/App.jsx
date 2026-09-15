@@ -3,6 +3,16 @@ import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login.js'
 
+const Notification = ({ message }) => {
+  if (message === null) {
+    return null
+  }
+
+  return (
+    <div>{message}</div>
+  )
+}
+
 const App = () => {
   const [blogs, setBlogs] = useState([])
   const [username, setUsername] = useState('')
@@ -11,6 +21,7 @@ const App = () => {
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
+  const [message, setMessage] = useState(null)
 
 
   useEffect(() => {
@@ -32,10 +43,11 @@ const App = () => {
   const handleLogin = async event => {
     event.preventDefault()
 
-    const user = await loginService.login({
-      username,
-      password,
-    })
+    try {
+      const user = await loginService.login({
+        username,
+        password,
+      })
 
 
     window.localStorage.setItem(
@@ -46,7 +58,14 @@ const App = () => {
     setUser(user)
     setUsername('')
     setPassword('')
+  } catch {
+    setMessage ('wrong username/password')
+
+    setTimeout(() => {
+      setMessage(null)
+    }, 5000)
   }
+}
 
   const handleLogout = () => {
     window.localStorage.removeItem('loggedBlogappUser')
@@ -57,6 +76,7 @@ const App = () => {
     return (
       <div>
         <h2>Log in to application</h2>
+        <Notification message={message} />
 
       <form onSubmit={handleLogin}>
         <div>
@@ -101,6 +121,11 @@ const handleCreateBlog = async event => {
   setTitle('')
   setAuthor('')
   setUrl('')
+
+  setMessage(`a new blog ${blog.title} by ${blog.author} added`)
+  setTimeout(() => {
+    setMessage(null)
+  }, 5000)
   
 
 }
@@ -109,6 +134,8 @@ const handleCreateBlog = async event => {
   return (
     <div>
       <h2>blogs</h2>
+      <Notification message={message}/>
+
       <p>{user.name} logged in
       <button onClick={handleLogout}>logout</button>
       </p>
