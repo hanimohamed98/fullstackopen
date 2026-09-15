@@ -36,4 +36,3 @@ app.use(errorHandler)
 
 module.exports = app
 
-eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImhhbmkiLCJpZCI6IjZhYTgzODI1MjdmZTZhYTg4YWU0NmI5YSIsImlhdCI6MTc4OTQ3NTQ2MH0._Odqs-NPSH17LJ1RnzwFunDjXJFQcqSE9-2V8cXo9Xc
