@@ -3,6 +3,7 @@ import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login.js'
 import Togglable from './components/Togglable'
+import BlogForm from './components/BlogForm'
 
 
 const Notification = ({ message }) => {
@@ -20,9 +21,6 @@ const App = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
-  const [title, setTitle] = useState('')
-  const [author, setAuthor] = useState('')
-  const [url, setUrl] = useState('')
   const [message, setMessage] = useState(null)
 
   const blogFormRef = useRef()
@@ -113,21 +111,14 @@ const App = () => {
 }
 
 
-const handleCreateBlog = async event => {
-  event.preventDefault()
+const handleCreateBlog = async blogObject => {
   
   blogFormRef.current.toggleVisibility()
 
-  const blog = await blogService.create ({
-    title,
-    author,
-    url,
-  })
+  const blog = await blogService.create(blogObject)
+  
 
   setBlogs(blogs.concat(blog))
-  setTitle('')
-  setAuthor('')
-  setUrl('')
 
   setMessage(`a new blog ${blog.title} by ${blog.author} added`)
   setTimeout(() => {
@@ -149,38 +140,7 @@ const handleCreateBlog = async event => {
 
 
       <Togglable buttonLabel="create new blog" ref={blogFormRef}>
-        <h2>create new</h2>
-
-        <form onSubmit={handleCreateBlog}>
-           <div>
-            title 
-          <input
-            type="text"
-            value={title}
-            onChange={({ target }) => setTitle(target.value)}
-         />
-        </div>
-
-      <div>
-        author
-        <input
-          type="text"
-          value={author}
-          onChange={({ target }) => setAuthor(target.value)}
-        />
-      </div>
-
-      <div>
-        url 
-        <input
-          type="text"
-          value={url}
-          onChange={({ target }) => setUrl(target.value)}
-        />
-      </div>
-
-      <button type= "submit">create</button>
-      </form>
+        <BlogForm createBlog={handleCreateBlog} />
     </Togglable>
 
       {blogs.map(blog =>
