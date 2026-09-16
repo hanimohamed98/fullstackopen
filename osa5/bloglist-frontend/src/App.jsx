@@ -163,7 +163,10 @@ const handleLike = async blog => {
         <BlogForm createBlog={handleCreateBlog} />
     </Togglable>
 
-      {blogs.map(blog =>
+      {blogs
+      .slice()
+      .sort((a, b) => b.likes - a.likes)
+      .map(blog =>
         <Blog key={blog.id} blog={blog} handleLike={() => handleLike(blog)} />
       )}
     </div>
