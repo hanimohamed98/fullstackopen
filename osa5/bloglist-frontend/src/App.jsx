@@ -129,6 +129,7 @@ const handleCreateBlog = async blogObject => {
 }
 
 const handleLike = async blog => {
+  console.log('user before like:')
   const updatedBlog = {
     ...blog,
     likes: blog.likes + 1,
@@ -137,8 +138,12 @@ const handleLike = async blog => {
 
   const returnedBlog = await blogService.update(blog.id, updatedBlog)
 
+  console.log('returned blog:', returnedBlog)
+
   setBlogs(blogs.map(b => 
-  b.id === blog.id ? returnedBlog : b
+  b.id === blog.id 
+  ? {...returnedBlog, user: blog.user} 
+  : b
   ))
 
 }
