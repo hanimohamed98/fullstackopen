@@ -128,6 +128,21 @@ const handleCreateBlog = async blogObject => {
 
 }
 
+const handleLike = async blog => {
+  const updatedBlog = {
+    ...blog,
+    likes: blog.likes + 1,
+    user: blog.user.id,
+  }
+
+  const returnedBlog = await blogService.update(blog.id, updatedBlog)
+
+  setBlogs(blogs.map(b => 
+  b.id === blog.id ? returnedBlog : b
+  ))
+
+}
+
     
   return (
     <div>
@@ -144,7 +159,7 @@ const handleCreateBlog = async blogObject => {
     </Togglable>
 
       {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} />
+        <Blog key={blog.id} blog={blog} handleLike={() => handleLike(blog)} />
       )}
     </div>
   )

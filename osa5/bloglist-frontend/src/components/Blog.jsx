@@ -1,7 +1,7 @@
 import { useState } from 'react'
 
 
-const Blog = ({ blog }) => {
+const Blog = ({ blog, handleLike}) => {
   const [showDetails, setShowDetails] = useState(false)
   
   if (showDetails) {
@@ -16,7 +16,7 @@ const Blog = ({ blog }) => {
 
       <div>
         likes {blog.likes}
-        <button>like</button>
+        <button onClick={handleLike}>like</button>
       </div>
 
       <div>{blog.user && blog.user.name}</div>
