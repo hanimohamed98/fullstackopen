@@ -1,7 +1,9 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login.js'
+import Togglable from './components/Togglable'
+
 
 const Notification = ({ message }) => {
   if (message === null) {
@@ -22,6 +24,9 @@ const App = () => {
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
   const [message, setMessage] = useState(null)
+
+  const blogFormRef = useRef()
+
 
 
   useEffect(() => {
@@ -110,6 +115,8 @@ const App = () => {
 
 const handleCreateBlog = async event => {
   event.preventDefault()
+  
+  blogFormRef.current.toggleVisibility()
 
   const blog = await blogService.create ({
     title,
@@ -140,17 +147,19 @@ const handleCreateBlog = async event => {
       <button onClick={handleLogout}>logout</button>
       </p>
 
-      <h2>create new</h2>
 
-      <form onSubmit={handleCreateBlog}>
-         <div>
-          title 
-        <input
-          type="text"
-          value={title}
-          onChange={({ target }) => setTitle(target.value)}
-        />
-      </div>
+      <Togglable buttonLabel="create new blog" ref={blogFormRef}>
+        <h2>create new</h2>
+
+        <form onSubmit={handleCreateBlog}>
+           <div>
+            title 
+          <input
+            type="text"
+            value={title}
+            onChange={({ target }) => setTitle(target.value)}
+         />
+        </div>
 
       <div>
         author
@@ -172,7 +181,7 @@ const handleCreateBlog = async event => {
 
       <button type= "submit">create</button>
       </form>
-
+    </Togglable>
 
       {blogs.map(blog =>
         <Blog key={blog.id} blog={blog} />
