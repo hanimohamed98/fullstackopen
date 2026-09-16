@@ -136,6 +136,7 @@ const handleLike = async blog => {
     user: blog.user.id,
   }
 
+
   const returnedBlog = await blogService.update(blog.id, updatedBlog)
 
   console.log('returned blog:', returnedBlog)
@@ -146,6 +147,14 @@ const handleLike = async blog => {
   : b
   ))
 
+}
+
+const handleRemove = async blog => {
+  if (window.confirm(`Remove blog ${blog.title} by ${blog.author}?`)) {
+    await blogService.remove(blog.id)
+
+    setBlogs(blogs.filter(b => b.id !== blog.id))
+  }
 }
 
     
@@ -167,7 +176,7 @@ const handleLike = async blog => {
       .slice()
       .sort((a, b) => b.likes - a.likes)
       .map(blog =>
-        <Blog key={blog.id} blog={blog} handleLike={() => handleLike(blog)} />
+        <Blog key={blog.id} blog={blog} handleLike={() => handleLike(blog)} handleRemove={() => handleRemove(blog)} canRemove= {blog.user && blog.user.username === user.username}/>
       )}
     </div>
   )

@@ -1,7 +1,7 @@
 import { useState } from 'react'
 
 
-const Blog = ({ blog, handleLike}) => {
+const Blog = ({ blog, handleLike, handleRemove, canRemove}) => {
   const [showDetails, setShowDetails] = useState(false)
   
   if (showDetails) {
@@ -20,6 +20,10 @@ const Blog = ({ blog, handleLike}) => {
       </div>
 
       <div>{blog.user && blog.user.name}</div>
+
+    {canRemove && (
+      <button onClick={handleRemove}>delete</button>
+    )}
     </div>
     )
   }
